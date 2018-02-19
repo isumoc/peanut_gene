@@ -1,0 +1,13 @@
+name = Peanut Gene
+description = Peanutbase Gene Search and View for Drupal 7/Tripal 3.
+core = 7.x
+package = Tripal Extensions
+
+version = 7.x-3.0
+dependencies[] = tripal
+dependencies[] = tripal_chado
+dependencies[] = tripal_chado_views
+
+files[]=views/peanut_gene.views.inc
+
+stylesheets[all][] = theme/css/peanut_gene.css
