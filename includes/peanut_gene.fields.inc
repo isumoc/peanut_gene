@@ -51,8 +51,8 @@ function peanut_gene_bundle_fields_info($entity_type, $bundle) {
     ));
 
     // Then describe the field defined by that term.
-    $field_name = 'field_gene_assembly_version';
-    $field_type = 'gene_assembly_version';
+    $field_name = 'local__gene_assembly_version';
+    $field_type = 'local__gene_assembly_version';
     $fields[$field_name] = array(
       'field_name' => $field_name,
       'type' => $field_type,
@@ -204,8 +204,8 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
     *
     *  1. Begin GENE ASSEMBLY VERSION
     */
-    $field_name = 'field_gene_assembly_version';
-    $field_type = 'gene_assembly_version';
+    $field_name = 'local__gene_assembly_version';
+    $field_type = 'local__gene_assembly_version';
     $instances[$field_name] =  array(
       'field_name' => $field_name,
       'entity_type' => $entity_type,
@@ -214,7 +214,7 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
       'description' => 'Gene Assembly Version Desc.',
       'required' => FALSE,
       'settings' => array(
-        'auto_attach' => FALSE,
+      'auto_attach' => TRUE,
         // 'chado_table' => $bundle->data_table,
         // 'chado_column' => 'organism_id',
         // 'base_table' => $bundle->data_table,
