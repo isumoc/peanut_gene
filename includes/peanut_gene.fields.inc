@@ -76,8 +76,11 @@ function peanut_gene_bundle_fields_info($entity_type, $bundle) {
     ));
 
     // Then describe the field defined by that term.
-    $field_name = 'field_gene_model_build';
-    $field_type = 'gene_model_build';
+    // TODO: change field_name to same value as field_type
+    // $field_name = 'field_gene_model_build';
+    //$field_type = 'gene_model_build';
+    $field_name = 'local__gene_model_build';
+    $field_type = 'local__gene_model_build';
     $fields[$field_name] = array(
       'field_name' => $field_name,
       'type' => $field_type,
@@ -233,8 +236,8 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
     *
     *  2. Begin GENE MODEL BUILD
     */
-    $field_name = 'field_gene_model_build';
-    $field_type = 'gene_model_build';
+    $field_name = 'local__gene_model_build';
+    $field_type = 'local__gene_model_build';
     $instances[$field_name] =  array(
       'field_name' => $field_name,
       'entity_type' => $entity_type,
@@ -243,7 +246,7 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
       'description' => 'Gene Model Build Desc.',
       'required' => FALSE,
       'settings' => array(
-        'auto_attach' => FALSE,
+      'auto_attach' => TRUE,
         // 'chado_table' => $bundle->data_table,
         // 'chado_column' => 'organism_id',
         // 'base_table' => $bundle->data_table,
