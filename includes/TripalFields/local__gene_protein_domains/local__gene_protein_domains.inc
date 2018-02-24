@@ -85,7 +85,7 @@ class local__gene_protein_domains extends TripalField {
   // fields and instances of this field type through the UI. Such
   // fields can only be created programmatically with field_create_field()
   // and field_create_instance().
-  public static $no_ui = FALSE;
+  public static $no_ui = TRUE;
 
   // A boolean specifying that the field will not contain any data. This
   // should exclude the field from web services or downloads.  An example
@@ -138,7 +138,7 @@ class local__gene_protein_domains extends TripalField {
       $domains = $row->domains;
     }
 
-    $entity->field_gene_protein_domains['und'][0]['value'] = $domains;
+    $entity->local__gene_protein_domains['und'][0]['value'] = $domains;
   }
 
 
