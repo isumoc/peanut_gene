@@ -57,6 +57,11 @@ function peanut_gene_entity_view($entity, $type, $view_mode, $langcode) {
   }//end if bio_data_6
 } // end function
 
+function peanut_gene_preprocess_entity(&$variables) {
+  if (isset($variables['TripalEntity']) && ($variables['TripalEntity']->bundle == 'bio_data_6')) {
+    $variables['theme_hook_suggestions'][] =  'TripalEntity__peanut_gene';
+  }
+}
 
 /**
 *
