@@ -130,8 +130,8 @@ function peanut_gene_bundle_fields_info($entity_type, $bundle) {
     ));
 
     // Then describe the field defined by that term.
-    $field_name = 'field_gene_expression';
-    $field_type = 'gene_expression';
+    $field_name = 'local__gene_expression';
+    $field_type = 'local__gene_expression';
     $fields[$field_name] = array(
       'field_name' => $field_name,
       'type' => $field_type,
@@ -300,8 +300,8 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
     *
     *  4. Begin GENE EXPRESSION
     */
-    $field_name = 'field_gene_expression';
-    $field_type = 'gene_expression';
+    $field_name = 'local__gene_expression';
+    $field_type = 'local__gene_expression';
     $instances[$field_name] =  array(
       'field_name' => $field_name,
       'entity_type' => $entity_type,
@@ -310,7 +310,7 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
       'description' => 'Gene Expression Desc.',
       'required' => FALSE,
       'settings' => array(
-        'auto_attach' => FALSE,
+      'auto_attach' => TRUE,
         // 'chado_table' => $bundle->data_table,
         // 'chado_column' => 'organism_id',
         // 'base_table' => $bundle->data_table,

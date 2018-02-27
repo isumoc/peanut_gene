@@ -83,12 +83,35 @@ class local__gene_expression_formatter extends TripalFieldFormatter {
     // Get the settings
     $settings = $display['settings'];
 
-    $element = array(
-      '#markup' => $items[0]['value'],
-    );
+    //dpm($settings);
+
+    $transcript = $items[0]['value']['transcript'];
+    $gene_model = $items[0]['value']['gene_model'];
+
+    $expression_markup = '';
+    if ($transcript) {
+      $expression_markup = <<<EXPMARKUP
+        <p>
+        Gene expression for <b> $gene_model </b> has been determined by its associated
+        transcript, <b> $transcript </b> in the transcript assemblies
+        from
+        <a href="http://journal.frontiersin.org/article/10.3389/fpls.2016.01446/full">Clevenger
+        et al. 2016</a>.
+        Visualization of expression is provided by the eFP browser
+         (<a href="http://dx.doi.org/10.1371/journal.pone.0000718">Winter et al. 2007</a>).
+         Click the image to explore gene expression data for peanut.
+        </p>
+        <a href="http://bar.utoronto.ca/efp_arachis/cgi-bin/efpWeb.cgi?dataSource=Arachis_Atlas&modeInput=Absolute&primaryGene=$transcript">
+        <img src='http://bar.utoronto.ca/webservices/efp_webservices/cgi-bin/get_arachisefp_image.cgi?request={"geneid":"$transcript"}'>
+        </a>
+EXPMARKUP;
+      } // end if transcript
+
+   $element = array(
+       '#markup' => $expression_markup,
+   );
 
    return $element;
-
   }
 
   /**

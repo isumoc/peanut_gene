@@ -85,7 +85,7 @@ class local__gene_expression extends TripalField {
   // fields and instances of this field type through the UI. Such
   // fields can only be created programmatically with field_create_field()
   // and field_create_instance().
-  public static $no_ui = FALSE;
+  public static $no_ui = TRUE;
 
   // A boolean specifying that the field will not contain any data. This
   // should exclude the field from web services or downloads.  An example
@@ -130,8 +130,6 @@ class local__gene_expression extends TripalField {
     // $entity->{$field_name}['und'][0]['value'] = TRUE;
 
     $feature = $entity->chado_record;
-
-    $expression_text = '';
     $options = array('return_array' => true);
     $feature = chado_expand_var($feature, 'table', 'feature_relationship', $options);
     $feature_relationships = $feature->feature_relationship;
@@ -146,26 +144,13 @@ class local__gene_expression extends TripalField {
       }
     }//each feature_relationship
 
-    if ($transcript) {
-      $expression_text = <<<EXPTEXT
-      <p>
-      Gene expression for <b> $gene_model </b> has been determined by its associated
-      transcript, <b> $transcript </b> in the transcript assemblies
-      from
-      <a href="http://journal.frontiersin.org/article/10.3389/fpls.2016.01446/full">Clevenger
-      et al. 2016</a>.
-      Visualization of expression is provided by the eFP browser
-       (<a href="http://dx.doi.org/10.1371/journal.pone.0000718">Winter et al. 2007</a>).
-       Click the image to explore gene expression data for peanut.
-      </p>
-      <a href="http://bar.utoronto.ca/efp_arachis/cgi-bin/efpWeb.cgi?dataSource=Arachis_Atlas&modeInput=Absolute&primaryGene=$transcript">
-      <img src='http://bar.utoronto.ca/webservices/efp_webservices/cgi-bin/get_arachisefp_image.cgi?request={"geneid":"$transcript"}'>
-      </a>
-EXPTEXT;
-    } // end if transcript
+    //TODO: add to list of cvterms needing verification
+    $expression_array = array(
+     'schema:name' => $gene_model,
+     'tripal:has-transcript' => $transcript
+    );
 
-
-    $entity->field_gene_expression['und'][0]['value'] = $expression_text;
+    $entity->local__gene_expression['und'][0]['value'] = $expression_array;
 
   }
 
