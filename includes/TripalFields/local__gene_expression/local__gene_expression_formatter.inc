@@ -83,10 +83,8 @@ class local__gene_expression_formatter extends TripalFieldFormatter {
     // Get the settings
     $settings = $display['settings'];
 
-    //dpm($settings);
-
-    $transcript = $items[0]['value']['transcript'];
-    $gene_model = $items[0]['value']['gene_model'];
+    $transcript = $items[0]['value']['tripal:has-transcript'];
+    $gene_model = $items[0]['value']['schema:name'];
 
     $expression_markup = '';
     if ($transcript) {
