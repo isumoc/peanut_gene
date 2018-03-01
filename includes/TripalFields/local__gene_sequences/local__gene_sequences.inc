@@ -85,7 +85,7 @@ class local__gene_sequences extends TripalField {
   // fields and instances of this field type through the UI. Such
   // fields can only be created programmatically with field_create_field()
   // and field_create_instance().
-  public static $no_ui = FALSE;
+  public static $no_ui = TRUE;
 
   // A boolean specifying that the field will not contain any data. This
   // should exclude the field from web services or downloads.  An example
@@ -131,9 +131,6 @@ class local__gene_sequences extends TripalField {
 
     $feature = $entity->chado_record;
 
-    // number of bases per line in FASTA format
-    $num_bases = 50;
-
     // Always want to expand joins as arrays regardless of how many matches
     $table_options = array('return_array' => true);
 
@@ -163,142 +160,24 @@ class local__gene_sequences extends TripalField {
           $pep_residues = $row->residues;
         }
 
-        $mRNAs[$relative->subject_id->name] = array(
-          'uniquename'   => $relative->subject_id->uniquename,
-          'residues'     => $relative->subject_id->residues,
-          'pep_name'     => $pep_name,
-          'pep_residues' => $pep_residues,
+        //TODO: add to list of cvterms needing verification
+        $mRNAs = [$relative->subject_id->name] = array(
+          'local:gene_uniquename'   => $relative->subject_id->uniquename,
+          'local:gene_residues'     => $relative->subject_id->residues,
+          'local:gene_pep_name'     => $pep_name,
+          'local:gene_pep_residues' => $pep_residues,
         );
       }
     }
     ksort($mRNAs);
 
-    ///////////////////////   PREPARE THE RECORD TABLE   ////////////////////////
-
-    // the $headers array is an array of fields to use as the column headers.
-    // additional documentation can be found here
-    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
-    // This table for the analysis has a vertical header (down the first column)
-    // so we do not provide headers here, but specify them in the $rows array below.
-    $headers = array();
-
-    // the $rows array contains an array of rows where each row is an array
-    // of values for each column of the table in that row.  Additional documentation
-    // can be found here:
-    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
-    $rows = array();
-
-    // Name row
-    $rows[] = array(
-      array(
-        'data' => 'Gene Model Name',
-        'header' => TRUE,
-        'width' => '20%',
-      ),
-      $feature->name
+    //TODO: add to list of cvterms needing verification
+    $sequence_array = array(
+     'schema:name' => $feature->name,
+     'SO:sequence_of' => array('local:gene_mrna' => $mRNAs)
     );
 
-    // Name row
-    $rows[] = array(
-      array(
-        'data' => '',
-        'header' => TRUE,
-        'width' => '20%',
-      ),
-      'This gene model has ' . count($mRNAs) . ' associated mRNAs',
-    );
-
-    /////// SEPARATOR /////////
-    $rows[] = array(
-      array(
-        'data' => '',
-        'header' => TRUE,
-        'height' => 6,
-        'style' => 'background-color:white',
-      ),
-      array(
-        'data' => '',
-        'style' => 'background-color:white',
-      ),
-    );
-
-    foreach (array_keys($mRNAs) as $mRNA_name) {
-      $wrapped = wordwrap($mRNAs[$mRNA_name]['residues'], $num_bases, "<br>", TRUE);
-      $seq_html = <<<SEQ
-        <div id="residues" class="tripal_feature-sequence-item">
-        <p><b>$mRNA_name sequence</b></p>
-        <pre class="tripal_feature-sequence">>$mRNA_name\n$wrapped</pre>
-        <a href="#sequences-top">back to top</a>
-        </div>
-SEQ;
-      $rows[] = array(
-        array(
-          'data' => 'mRNA Sequence',
-          'header' => TRUE,
-          'width' => '20%',
-        ),
-        "<a name='$mRNA_name'></a>$seq_html"
-      );
-
-      // polypetide sequence
-      //$seq_html = peanutbase_theme_makeFASTAdiv($mRNA_name, $mRNAs[$mRNA_name]['pep_residues'], $num_bases);
-      $wrapped = wordwrap($mRNAs[$mRNA_name]['pep_residues'], $num_bases, "<br>", TRUE);
-      $seq_html = <<<SEQ
-        <div id="residues" class="tripal_feature-sequence-item">
-        <p><b>$mRNA_name sequence</b></p>
-        <pre class="tripal_feature-sequence">>$mRNA_name\n$wrapped</pre>
-        <a href="#sequences-top">back to top</a>
-        </div>
-SEQ;
-      $rows[] = array(
-        array(
-          'data' => 'Protein Sequence',
-          'header' => TRUE,
-          'width' => '20%',
-        ),
-        $seq_html
-      );
-
-      /////// SEPARATOR /////////
-      $rows[] = array(
-        array(
-          'data' => '',
-          'header' => TRUE,
-          'height' => 6,
-          'style' => 'background-color:white',
-        ),
-        array(
-          'data' => '',
-          'style' => 'background-color:white',
-        ),
-      );
-    }// end foreach mRNA
-
-    // the $table array contains the headers and rows array as well as other
-    // options for controlling the display of the table.  Additional
-    // documentation can be found here:
-    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
-    $table = array(
-      'header' => $headers,
-      'rows' => $rows,
-      'attributes' => array(
-        'id' => 'tripal_feature-table-base',
-        'class' => 'tripal-data-table'
-      ),
-      'sticky' => FALSE,
-      'caption' => '',
-      'colgroups' => array(),
-      'empty' => '',
-    );
-
-    // So we can get back to the top of the page quickly:
-    // print '<a name="sequences-top"></a>';
-
-    // once we have our table array structure defined, we call Drupal's theme_table()
-    // function to generate the table.
-    $sequence_content =  theme_table($table);
-
-    $entity->field_gene_sequences['und'][0]['value'] = $sequence_content;
+    $entity->local__gene_sequences['und'][0]['value'] = $sequence_array;
 
   }
 

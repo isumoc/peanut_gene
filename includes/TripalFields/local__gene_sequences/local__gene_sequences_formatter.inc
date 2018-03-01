@@ -83,11 +83,140 @@ class local__gene_sequences_formatter extends TripalFieldFormatter {
     // Get the settings
     $settings = $display['settings'];
 
-    $element = array(
-      '#markup' => $items[0]['value'],
+    $mRNAs = $items[0]['value']['SO:sequence_of'];
+    $gene_model_name = $items[0]['value']['schema:name'];
+
+    // number of bases per line in FASTA format
+    $num_bases = 50;
+
+    ///////////////////////   PREPARE THE RECORD TABLE   ////////////////////////
+
+    // the $headers array is an array of fields to use as the column headers.
+    // additional documentation can be found here
+    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
+    // This table for the analysis has a vertical header (down the first column)
+    // so we do not provide headers here, but specify them in the $rows array below.
+    $headers = array();
+
+    // the $rows array contains an array of rows where each row is an array
+    // of values for each column of the table in that row.  Additional documentation
+    // can be found here:
+    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
+    $rows = array();
+
+    // Name row
+    $rows[] = array(
+      array(
+        'data' => 'Gene Model Name',
+        'header' => TRUE,
+        'width' => '20%',
+      ),
+      $gene_model_name
     );
 
-   return $element;
+    // Name row
+    $rows[] = array(
+      array(
+        'data' => '',
+        'header' => TRUE,
+        'width' => '20%',
+      ),
+      'This gene model has ' . count($mRNAs) . ' associated mRNAs',
+    );
+
+    /////// SEPARATOR /////////
+    $rows[] = array(
+      array(
+        'data' => '',
+        'header' => TRUE,
+        'height' => 6,
+        'style' => 'background-color:white',
+      ),
+      array(
+        'data' => '',
+        'style' => 'background-color:white',
+      ),
+    );
+
+    $sequence_display_name = $mRNAs['local:gene_mrna']['local:gene_pep_name'];
+
+    foreach (array_keys($mRNAs) as $mRNA_name) {
+      $wrapped = wordwrap($mRNAs[$mRNA_name]['local:gene_residues'], $num_bases, "<br>", TRUE);
+      $seq_html = <<<SEQ
+        <div id="residues" class="tripal_feature-sequence-item">
+        <p><b>$sequence_display_name sequence</b></p>
+        <pre class="tripal_feature-sequence">>$sequence_display_name\n$wrapped</pre>
+        <a href="#sequences-top">back to top</a>
+        </div>
+SEQ;
+      $rows[] = array(
+        array(
+          'data' => 'mRNA Sequence',
+          'header' => TRUE,
+          'width' => '20%',
+        ),
+        "<a name='$mRNA_name'></a>$seq_html"
+      );
+
+      // polypetide sequence
+      $wrapped = wordwrap($mRNAs[$mRNA_name]['local:gene_pep_residues'], $num_bases, "<br>", TRUE);
+      $seq_html = <<<SEQ
+        <div id="residues" class="tripal_feature-sequence-item">
+        <p><b>$sequence_display_name sequence</b></p>
+        <pre class="tripal_feature-sequence">>$sequence_display_name\n$wrapped</pre>
+        <a href="#sequences-top">back to top</a>
+        </div>
+SEQ;
+      $rows[] = array(
+        array(
+          'data' => 'Protein Sequence',
+          'header' => TRUE,
+          'width' => '20%',
+        ),
+        $seq_html
+      );
+
+      /////// SEPARATOR /////////
+      $rows[] = array(
+        array(
+          'data' => '',
+          'header' => TRUE,
+          'height' => 6,
+          'style' => 'background-color:white',
+        ),
+        array(
+          'data' => '',
+          'style' => 'background-color:white',
+        ),
+      );
+    }// end foreach mRNA
+
+    // the $table array contains the headers and rows array as well as other
+    // options for controlling the display of the table.  Additional
+    // documentation can be found here:
+    // https://api.drupal.org/api/drupal/includes%21theme.inc/function/theme_table/7
+    $table = array(
+      'header' => $headers,
+      'rows' => $rows,
+      'attributes' => array(
+        'id' => 'tripal_feature-table-base',
+        'class' => 'tripal-data-table'
+      ),
+      'sticky' => FALSE,
+      'caption' => '',
+      'colgroups' => array(),
+      'empty' => '',
+    );
+
+    // once we have our table array structure defined, we call Drupal's theme_table()
+    // function to generate the table.
+    $sequence_content =  theme_table($table);
+
+    $element = array(
+      '#markup' => $sequence_content,
+    );
+
+    return $element;
 
   }
 
