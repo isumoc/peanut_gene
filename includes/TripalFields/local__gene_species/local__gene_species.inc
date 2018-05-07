@@ -6,7 +6,7 @@
  * Data:
  * Assumptions:
  */
-class local__gene_protein_domains extends TripalField {
+class local__gene_species extends TripalField {
 
   // --------------------------------------------------------------------------
   //                     EDITABLE STATIC CONSTANTS
@@ -17,16 +17,16 @@ class local__gene_protein_domains extends TripalField {
   // --------------------------------------------------------------------------
 
   // The default label for this field.
-  public static $default_label = 'Gene Protein Domains';
+  public static $default_label = 'Gene Species';
 
   // The default description for this field.
-  public static $default_description = 'Gene Protein Domains Desc.';
+  public static $default_description = 'Gene Species Desc.';
 
   // The default widget for this field.
-  public static $default_widget = 'local__gene_protein_domains_widget';
+  public static $default_widget = 'local__gene_species_widget';
 
   // The default formatter for this field.
-  public static $default_formatter = 'local__gene_protein_domains_formatter';
+  public static $default_formatter = 'local__gene_species_formatter';
 
   // The module that manages this field.
   public static $module = 'peanut_gene';
@@ -58,14 +58,14 @@ class local__gene_protein_domains extends TripalField {
     // The DATABASE name, as it appears in chado.db.  This also builds the link-out url.  In most cases this will simply be the CV name.  In some cases (EDAM) this will be the SUBONTOLOGY.
     'term_vocabulary' => 'local',
     // The name of the term.
-    'term_name' => 'gene_protein_domains',
+    'term_name' => 'gene_species',
     // The unique ID (i.e. accession) of the term.
-    'term_accession' => 'gene_protein_domains',
+    'term_accession' => 'gene_species',
     // Set to TRUE if the site admin is not allowed to change the term
     // type, otherwise the admin can change the term mapped to a field.
     'term_fixed' => FALSE,
 
-       // Indicates the download formats for this field.  The list must be the
+    // Indicates the download formats for this field.  The list must be the
     // name of a child class of the TripalFieldDownloader.
     'download_formatters' => array(
       'TripalTabDownloader',
@@ -127,31 +127,12 @@ class local__gene_protein_domains extends TripalField {
     // value for testing purposes. Change this line to load the data
     // your field requires.
     // $field_name = get_class();
-    //$entity->{$field_name}['und'][0]['value'] = TRUE;
+    // $entity->{$field_name}['und'][0]['value'] = TRUE;
 
-    $feature = $entity->chado_record;
-    $domains = 'unknown';
+    $abbreviation = $entity->chado_record->organism_id->abbreviation;
 
-    $sql = "select string_agg(DISTINCT(f1.name), E' ') as domains
-     FROM chado.feature f1
-     JOIN chado.featureloc
-      ON chado.featureloc.feature_id = f1.feature_id
-     JOIN chado.feature_relationship fr1
-      ON fr1.subject_id  = chado.featureloc.srcfeature_id
-     JOIN chado.feature_relationship fr2
-      ON fr1.object_id = fr2.subject_id
-     JOIN chado.feature f2
-      ON fr2.object_id = f2.feature_id
-     JOIN chado.cvterm
-      ON chado.cvterm.cvterm_id = f2.type_id
-     WHERE chado.cvterm.name = 'gene'
-     AND f2.feature_id = " . $feature->feature_id . " GROUP BY f2.feature_id";
-    if ($res = chado_query($sql, array())) {
-      $row = $res->fetchObject();
-      $domains = $row->domains;
-    }
+    $entity->local__gene_species['und'][0]['value'] = $abbreviation;
 
-    $entity->local__gene_protein_domains['und'][0]['value'] = $domains;
   }
 
 
@@ -253,13 +234,17 @@ class local__gene_protein_domains extends TripalField {
    */
   public function elementInfo() {
     $field_term = $this->getFieldTermID();
+
+    //watchdog("MOC: ft=", $field_term);
+
     return array(
       $field_term => array(
         'operations' => array('eq', 'ne', 'contains', 'starts'),
         'sortable' => TRUE,
         'searchable' => TRUE,
-      ),
+        ),
     );
+
   }
 
 
@@ -292,7 +277,9 @@ class local__gene_protein_domains extends TripalField {
    *   The field specific condition as set in the TripalFieldQuery object.
    */
   public function query($query, $condition) {
-
+    // TODO: remove these and implement
+    watchdog("MOC: q=", $query);
+    watchdog("MOC: cond=", $condition);
   }
 
   /**
@@ -306,7 +293,9 @@ class local__gene_protein_domains extends TripalField {
    *   should handle the ordering request as specified by this object.
    */
   public function queryOrder($query, $order) {
-
+    // TODO: remove these and implement
+    watchdog("MOC: qOq=", $query);
+    watchdog("MOC: qOcond=", $condition);
   }
 
 }

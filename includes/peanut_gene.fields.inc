@@ -170,6 +170,186 @@ function peanut_gene_bundle_fields_info($entity_type, $bundle) {
 
 
 
+  /*
+  *
+  *  6. Begin GENE START
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_start',
+      'name' => 'gene_start',
+      'cv_name' => 'local',
+      'definition' => 'Gene Start Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_start';
+    $field_type = 'local__gene_start';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+  /*
+  *
+  *  7. Begin GENE END
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_end',
+      'name' => 'gene_end',
+      'cv_name' => 'local',
+      'definition' => 'Gene End Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_end';
+    $field_type = 'local__gene_end';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+
+  /*
+  *
+  *  8. Begin GENE Species
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_species',
+      'name' => 'gene_species',
+      'cv_name' => 'local',
+      'definition' => 'Gene Species Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_species';
+    $field_type = 'local__gene_species';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+ /*
+  *
+  *  9. Begin GENE Chromosome
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_chromosome',
+      'name' => 'gene_chromosome',
+      'cv_name' => 'local',
+      'definition' => 'Gene Chromosome Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_chromosome';
+    $field_type = 'local__gene_chromosome';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+ /*
+  *
+  *  10. Begin GENE Name
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_name',
+      'name' => 'gene_name',
+      'cv_name' => 'local',
+      'definition' => 'Gene Name Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_name';
+    $field_type = 'local__gene_name';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+
+  /*
+  *
+  *  11. Begin GENE Description
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_description',
+      'name' => 'gene_description',
+      'cv_name' => 'local',
+      'definition' => 'Gene Description Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_description';
+    $field_type = 'local__gene_description';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+
+  /*
+  *
+  *  12. Begin GENE Description
+  */
+  // First add my term.
+    tripal_insert_cvterm(array(
+      'id' => 'local:gene_family',
+      'name' => 'gene_family',
+      'cv_name' => 'local',
+      'definition' => 'Gene Family Desc.',
+    ));
+
+    // Then describe the field defined by that term.
+    $field_name = 'local__gene_family';
+    $field_type = 'local__gene_family';
+    $fields[$field_name] = array(
+      'field_name' => $field_name,
+      'type' => $field_type,
+      'cardinality' => 1,
+      'locked' => FALSE,
+      'storage' => array(
+      'type' => 'tripal_no_storage',
+      ),
+    );
+
+
+
   } // end if isset()
   return $fields;
 }
@@ -359,6 +539,238 @@ function peanut_gene_bundle_instances_info($entity_type, $bundle) {
         ),
       ),
     );
+
+
+    /*
+    *
+    *  6. Begin GENE START
+    */
+    $field_name = 'local__gene_start';
+    $field_type = 'local__gene_start';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Start',
+      'description' => 'Gene Start Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_start_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_start_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  7. Begin GENE END
+    */
+    $field_name = 'local__gene_end';
+    $field_type = 'local__gene_end';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene End',
+      'description' => 'Gene End Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_end_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_end_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  8. Begin GENE Species
+    */
+    $field_name = 'local__gene_species';
+    $field_type = 'local__gene_species';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Species',
+      'description' => 'Gene Species Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_species_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_species_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  9. Begin GENE Chromosome
+    */
+    $field_name = 'local__gene_chromosome';
+    $field_type = 'local__gene_chromosome';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Chromosome',
+      'description' => 'Gene Chromosome Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_chromosome_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_chromosome_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  10. Begin GENE Name
+    */
+    $field_name = 'local__gene_name';
+    $field_type = 'local__gene_name';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Name',
+      'description' => 'Gene Name Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_name_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_name_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  11. Begin GENE Description
+    */
+    $field_name = 'local__gene_description';
+    $field_type = 'local__gene_description';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Description',
+      'description' => 'Gene Description Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_description_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_description_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
+
+    /*
+    *
+    *  12. Begin GENE Family
+    */
+    $field_name = 'local__gene_family';
+    $field_type = 'local__gene_family';
+    $instances[$field_name] =  array(
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'bundle' => $bundle->name,
+      'label' => 'Gene Family',
+      'description' => 'Gene Family Desc.',
+      'required' => FALSE,
+      'settings' => array(
+      'auto_attach' => FALSE,
+        // 'chado_table' => $bundle->data_table,
+        // 'chado_column' => 'organism_id',
+        // 'base_table' => $bundle->data_table,
+      ),
+      'widget' => array(
+        'type' => 'local__gene_family_widget',
+        'settings' => array(),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'local__gene_family_formatter',
+          'settings' => array(),
+        ),
+      ),
+    );
+
 
   }  //end if isset()
   return $instances;

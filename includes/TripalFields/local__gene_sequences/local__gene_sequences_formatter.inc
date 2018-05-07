@@ -210,10 +210,10 @@ SEQ;
 
     // once we have our table array structure defined, we call Drupal's theme_table()
     // function to generate the table.
-    $sequence_content =  theme_table($table);
+    $sequence_content = theme_table($table);
 
     $element = array(
-      '#markup' => $sequence_content,
+      array( '#markup' => $sequence_content ),
     );
 
     return $element;

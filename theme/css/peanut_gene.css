@@ -1,18 +1,13 @@
-#edit-domains {
-  width: 200px;
+.views-submit-button {
+  clear: both;
 }
-#edit-description {
-  width: 220px;
-}
-#edit-gene-family {
-  width: 280px;
-}
-#edit-name {
-  width: 200px;
-}
-.gene-search-form {
+
+#views-exposed-form-search-api-gene-index-page {
   background-color: lightgray;
   padding-left: 5px;
+  border: 1px solid black;
 }
 
-
+input[type="text"] {
+  width: 215px;
+}

@@ -103,13 +103,14 @@ class local__gene_expression_formatter extends TripalFieldFormatter {
         <img src='http://bar.utoronto.ca/webservices/efp_webservices/cgi-bin/get_arachisefp_image.cgi?request={"geneid":"$transcript"}'>
         </a>
 EXPMARKUP;
+
       } // end if transcript
 
-   $element = array(
-       '#markup' => $expression_markup,
-   );
+    $element = array(
+      array( '#markup' => $expression_markup ),
+    );
 
-   return $element;
+    return $element;
   }
 
   /**

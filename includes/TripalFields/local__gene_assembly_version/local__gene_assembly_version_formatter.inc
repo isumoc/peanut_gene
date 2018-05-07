@@ -84,7 +84,7 @@ class local__gene_assembly_version_formatter extends TripalFieldFormatter {
     $settings = $display['settings'];
 
     $element = array(
-      '#markup' => $items[0]['value'],
+      array( '#markup' => $items[0]['value'] ),
     );
 
     return $element;

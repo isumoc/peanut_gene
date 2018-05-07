@@ -6,13 +6,13 @@
  * Display:
  * Configuration:
  */
-class local__gene_model_build_formatter extends TripalFieldFormatter {
+class local__gene_family_formatter extends TripalFieldFormatter {
 
   // The default label for this field.
-  public static $default_label = 'Gene Model Build';
+  public static $default_label = 'Gene Family';
 
   // The list of field types for which this formatter is appropriate.
-  public static $field_types = array('local__gene_model_build');
+  public static $field_types = array('local__gene_family');
 
   // The list of default settings for this formatter.
   public static $default_settings = array(
@@ -84,11 +84,15 @@ class local__gene_model_build_formatter extends TripalFieldFormatter {
     $settings = $display['settings'];
 
     $element = array(
-      array( '#markup' => $items[0]['value'] ),
+      array( '#markup' => '<a href="https://legumeinfo.org/chado_gene_phylotree_v2?family=' .
+                    $items[0]['value'] .
+                    '&gene_name=' .
+                    $entity->local__gene_name['und'][0]['value']  . '">' .
+                    $items[0]['value']  .
+                    '</a>' ),
     );
 
-   return $element;
-
+    return $element;
   }
 
   /**

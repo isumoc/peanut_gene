@@ -84,9 +84,8 @@ class local__gene_protein_domains_formatter extends TripalFieldFormatter {
     $settings = $display['settings'];
 
     $element = array(
-      '#markup' => peanutbase_theme_domains_urlrewrite($items[0]['value']),
+      array( '#markup' => peanut_gene_domains_urlrewrite($items[0]['value'])),
     );
-
     return $element;
   }
 

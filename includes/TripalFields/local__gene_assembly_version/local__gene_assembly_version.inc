@@ -129,33 +129,21 @@ class local__gene_assembly_version extends TripalField {
       // $field_name = get_class();
       //$entity->{$field_name}['und'][0]['value'] = TRUE;
 
-  $feature = $entity->chado_record;
+    $feature = $entity->chado_record;
+    $assembly = 'unknown';
 
-  $assembly = 'unknown';
-  $feature = chado_expand_var($feature, 'table', 'featureloc');
-  $options = array('return_array' => 1);
-  //echo "<pre>expanded to ";var_dump($feature); echo"</pre>";
-  //adf: don't ask me why the structure is like so, but it is.
-  $src = $feature->featureloc->feature_id->srcfeature_id;
-  $src = chado_expand_var($src, 'table', 'analysisfeature', $options);
-  foreach ($src->analysisfeature as $af) {
-    $af = chado_expand_var($af, 'table', 'analysisprop', $options);
-    if (is_array($af->analysis_id->analysisprop)) {
-      foreach ($af->analysis_id->analysisprop as $ap) {
-        if ($ap->type_id->name == 'analysis_type' && $ap->value == 'genome assembly') {
-          $assembly = $af->analysis_id->name;
-        }
-      }
-    }
-    else {
-      $ap = $af->analysis_id->analysisprop;
-      if ($ap->type_id->name == 'analysis_type' && $ap->value == 'genome assembly') {
-        $assembly = $af->analysis_id->name;
-      }
-    }
-  }
+    $feature = chado_expand_var($feature, 'table', 'featureloc');
+    $options = array('return_array' => 1);
 
-  $entity->local__gene_assembly_version['und'][0]['value'] = $assembly;
+    $src = $feature->featureloc->feature_id->srcfeature_id;
+    $src = chado_expand_var($src, 'table', 'analysisfeature', $options);
+
+    $saf = $src->analysisfeature;
+    foreach ($saf as $af) {
+      $assembly = $af->analysis_id->name;
+    }
+
+    $entity->local__gene_assembly_version['und'][0]['value'] = $assembly;
 
   }
 
@@ -257,6 +245,14 @@ class local__gene_assembly_version extends TripalField {
    *   An associative array of the value elements provided by this field.
    */
   public function elementInfo() {
+    $field_term = $this->getFieldTermID();
+    return array(
+      $field_term => array(
+        'operations' => array('eq', 'ne', 'contains', 'starts'),
+        'sortable' => TRUE,
+        'searchable' => TRUE,
+      ),
+    );
   }
 
 

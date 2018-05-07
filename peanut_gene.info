@@ -7,7 +7,8 @@ version = 7.x-3.0
 dependencies[] = tripal
 dependencies[] = tripal_chado
 dependencies[] = tripal_chado_views
+dependencies[] = search_api
+dependencies[] = search_api_db
+dependencies[] = search_api_views
 
-files[]=views/peanut_gene.views.inc
-
-stylesheets[all][] = theme/css/peanut_gene.css
+files[] = views/peanut_gene.views.inc

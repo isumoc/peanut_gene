@@ -129,28 +129,22 @@ class local__gene_model_build extends TripalField {
       // $field_name = get_class();
       //$entity->{$field_name}['und'][0]['value'] = TRUE;
 
-  $feature = $entity->chado_record;
+    $feature = $entity->chado_record;
 
- // Get assembly version and gene model build (represented as analysis records)
-  $gene_set = 'unknown';
-  $options = array('return_array' => 1);
-  $feature = chado_expand_var($feature, 'table', 'analysisfeature', $options);
-  foreach ($feature->analysisfeature as $af) {
-    $af = chado_expand_var($af, 'table', 'analysisprop', $options);
-    if (is_array($af->analysis_id->analysisprop)) {
-      foreach ($af->analysis_id->analysisprop as $ap) {
-        if ($ap->type_id->name == 'analysis_type' && $ap->value == 'gene model set') {
-          $gene_set = $af->analysis_id->name;
+    // Get assembly version and gene model build (represented as analysis records)
+    $gene_set = 'unknown';
+    $options = array('return_array' => 1);
+    $feature = chado_expand_var($feature, 'table', 'analysisfeature', $options);
+
+    $faf = $feature->analysisfeature;
+    foreach ($faf as $af) {
+      $af = chado_expand_var($af->analysis_id, 'table', 'analysisprop', $options);
+      foreach ($af->analysisprop as $analysisprop) {
+        if ($analysisprop->type_id->name == 'analysis_type' && $analysisprop->value == 'gene model set') {
+          $gene_set = $af->name;
         }
       }
     }
-    else {
-      $ap = $af->analysis_id->analysisprop;
-      if ($ap->type_id->name == 'analysis_type' && $ap->value == 'gene model set') {
-        $gene_set = $af->analysis_id->name;
-      }
-    }
-  }
 
   $entity->local__gene_model_build['und'][0]['value'] = $gene_set;
 
@@ -254,6 +248,14 @@ class local__gene_model_build extends TripalField {
    *   An associative array of the value elements provided by this field.
    */
   public function elementInfo() {
+    $field_term = $this->getFieldTermID();
+    return array(
+      $field_term => array(
+        'operations' => array('eq', 'ne', 'contains', 'starts'),
+        'sortable' => TRUE,
+        'searchable' => TRUE,
+      ),
+    );
   }
 
 

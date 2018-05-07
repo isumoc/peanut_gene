@@ -129,7 +129,15 @@ class local__gene_expression extends TripalField {
     // $field_name = get_class();
     // $entity->{$field_name}['und'][0]['value'] = TRUE;
 
+    $gene_model = '';
+    $transcript = '';
     $feature = $entity->chado_record;
+
+    // dpm($entity, "SBO_RELATIONSHIP==>");
+
+    // MOC 4.17
+    // TODO:  already DEFINED IN $entity->sbo__relationship object ?
+
     $options = array('return_array' => true);
     $feature = chado_expand_var($feature, 'table', 'feature_relationship', $options);
     $feature_relationships = $feature->feature_relationship;
@@ -138,7 +146,9 @@ class local__gene_expression extends TripalField {
       $fr = chado_expand_var($fr, 'table', 'feature_relationshipprop', $options);
       $frp = $fr[0]->feature_relationshipprop;
 
-      if ( (isset($frp->value)) && ($frp->value == 'Tissue expression atlas transcripts mapping')) {
+      if ((isset($frp->value)) &&
+          ($frp->value == 'Tissue expression atlas transcripts mapping'))
+      {
         $gene_model = $fr[0]->subject_id->name;
         $transcript = $fr[0]->object_id->name;
       }
@@ -252,6 +262,14 @@ class local__gene_expression extends TripalField {
    *   An associative array of the value elements provided by this field.
    */
   public function elementInfo() {
+    $field_term = $this->getFieldTermID();
+    return array(
+      $field_term => array(
+        'operations' => array('eq', 'ne', 'contains', 'starts'),
+        'sortable' => TRUE,
+        'searchable' => TRUE,
+      ),
+    );
   }
 
 

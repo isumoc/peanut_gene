@@ -6,13 +6,13 @@
  * Display:
  * Configuration:
  */
-class local__gene_model_build_formatter extends TripalFieldFormatter {
+class local__gene_chromosome_formatter extends TripalFieldFormatter {
 
   // The default label for this field.
-  public static $default_label = 'Gene Model Build';
+  public static $default_label = 'Gene Chromosome';
 
   // The list of field types for which this formatter is appropriate.
-  public static $field_types = array('local__gene_model_build');
+  public static $field_types = array('local__gene_chromosome');
 
   // The list of default settings for this formatter.
   public static $default_settings = array(
@@ -87,7 +87,7 @@ class local__gene_model_build_formatter extends TripalFieldFormatter {
       array( '#markup' => $items[0]['value'] ),
     );
 
-   return $element;
+    return $element;
 
   }
 

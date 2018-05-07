@@ -6,13 +6,13 @@
  * Display:
  * Configuration:
  */
-class local__gene_model_build_formatter extends TripalFieldFormatter {
+class local__gene_name_formatter extends TripalFieldFormatter {
 
   // The default label for this field.
-  public static $default_label = 'Gene Model Build';
+  public static $default_label = 'Gene Name';
 
   // The list of field types for which this formatter is appropriate.
-  public static $field_types = array('local__gene_model_build');
+  public static $field_types = array('local__gene_name');
 
   // The list of default settings for this formatter.
   public static $default_settings = array(
@@ -78,17 +78,16 @@ class local__gene_model_build_formatter extends TripalFieldFormatter {
    *    An element array compatible with that returned by the
    *    hook_field_formatter_view() function.
    */
-  public function view(&$element, $entity_type, $entity, $langcode, $items, $display) {
+  public function view(&$element, $entity_type, $entity, $langcode, $items, $display){
 
     // Get the settings
     $settings = $display['settings'];
 
     $element = array(
-      array( '#markup' => $items[0]['value'] ),
+      array( '#markup' => '<a href="/bio_data/' . $entity->id . '">' . $items[0]['value'] . '</a>'),
     );
 
-   return $element;
-
+    return $element;
   }
 
   /**

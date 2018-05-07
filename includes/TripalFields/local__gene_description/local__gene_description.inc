@@ -6,7 +6,7 @@
  * Data:
  * Assumptions:
  */
-class local__gene_protein_domains extends TripalField {
+class local__gene_description extends TripalField {
 
   // --------------------------------------------------------------------------
   //                     EDITABLE STATIC CONSTANTS
@@ -17,16 +17,16 @@ class local__gene_protein_domains extends TripalField {
   // --------------------------------------------------------------------------
 
   // The default label for this field.
-  public static $default_label = 'Gene Protein Domains';
+  public static $default_label = 'Gene Description';
 
   // The default description for this field.
-  public static $default_description = 'Gene Protein Domains Desc.';
+  public static $default_description = 'Gene Description Desc.';
 
   // The default widget for this field.
-  public static $default_widget = 'local__gene_protein_domains_widget';
+  public static $default_widget = 'local__gene_description_widget';
 
   // The default formatter for this field.
-  public static $default_formatter = 'local__gene_protein_domains_formatter';
+  public static $default_formatter = 'local__gene_description_formatter';
 
   // The module that manages this field.
   public static $module = 'peanut_gene';
@@ -58,9 +58,9 @@ class local__gene_protein_domains extends TripalField {
     // The DATABASE name, as it appears in chado.db.  This also builds the link-out url.  In most cases this will simply be the CV name.  In some cases (EDAM) this will be the SUBONTOLOGY.
     'term_vocabulary' => 'local',
     // The name of the term.
-    'term_name' => 'gene_protein_domains',
+    'term_name' => 'gene_description',
     // The unique ID (i.e. accession) of the term.
-    'term_accession' => 'gene_protein_domains',
+    'term_accession' => 'gene_description',
     // Set to TRUE if the site admin is not allowed to change the term
     // type, otherwise the admin can change the term mapped to a field.
     'term_fixed' => FALSE,
@@ -122,36 +122,20 @@ class local__gene_protein_domains extends TripalField {
    *
    */
   public function load($entity) {
-    // Tripal fields, by default, won't show up on the page unless there
-    // is a value attached to them. Therefore, this line adds a default
-    // value for testing purposes. Change this line to load the data
-    // your field requires.
-    // $field_name = get_class();
-    //$entity->{$field_name}['und'][0]['value'] = TRUE;
+      // Tripal fields, by default, won't show up on the page unless there
+      // is a value attached to them. Therefore, this line adds a default
+      // value for testing purposes. Change this line to load the data
+      // your field requires.
+      // $field_name = get_class();
+      //$entity->{$field_name}['und'][0]['value'] = TRUE;
 
-    $feature = $entity->chado_record;
-    $domains = 'unknown';
+    // $feature = $entity->chado_record;
+    // $featureloc = chado_expand_var($feature, 'table', 'featureloc');
+    // $gene_description = $featureloc->featureloc->feature_id->fmax;
 
-    $sql = "select string_agg(DISTINCT(f1.name), E' ') as domains
-     FROM chado.feature f1
-     JOIN chado.featureloc
-      ON chado.featureloc.feature_id = f1.feature_id
-     JOIN chado.feature_relationship fr1
-      ON fr1.subject_id  = chado.featureloc.srcfeature_id
-     JOIN chado.feature_relationship fr2
-      ON fr1.object_id = fr2.subject_id
-     JOIN chado.feature f2
-      ON fr2.object_id = f2.feature_id
-     JOIN chado.cvterm
-      ON chado.cvterm.cvterm_id = f2.type_id
-     WHERE chado.cvterm.name = 'gene'
-     AND f2.feature_id = " . $feature->feature_id . " GROUP BY f2.feature_id";
-    if ($res = chado_query($sql, array())) {
-      $row = $res->fetchObject();
-      $domains = $row->domains;
-    }
 
-    $entity->local__gene_protein_domains['und'][0]['value'] = $domains;
+    $entity->local__gene_description['und'][0]['value'] = $entity->sofp__note['und'][0]['value'];
+
   }
 
 

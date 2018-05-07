@@ -136,6 +136,9 @@ class local__gene_sequences extends TripalField {
 
     // Expand relationships
     $mRNAs = array();
+
+    // TODO: check the entity to see if the SQL query can be avoided
+    // MOC 4.17
     $feature = chado_expand_var($feature, 'table', 'feature_relationship', $table_options);
     $related = $feature->feature_relationship->object_id;
 
@@ -144,15 +147,14 @@ class local__gene_sequences extends TripalField {
         $relative = chado_expand_var($relative, 'field', 'feature.residues');
 
         // Get polypeptide associated with the mRNA
-        $sql = "
-          SELECT p.* FROM {feature_relationship} fr
-            INNER JOIN {feature} p
-            ON p.feature_id=fr.subject_id
-            WHERE fr.type_id = (SELECT cvterm_id FROM {cvterm}
-                                  WHERE name = 'derives_from'
-                                  AND cv_id = (SELECT cv_id FROM {cv}
+        $sql = "SELECT p.* FROM {feature_relationship} fr
+                  INNER JOIN {feature} p
+                  ON p.feature_id=fr.subject_id
+                WHERE fr.type_id = (SELECT cvterm_id FROM {cvterm}
+                                    WHERE name = 'derives_from'
+                                    AND cv_id = (SELECT cv_id FROM {cv}
                                                  WHERE name='relationship'))
-            AND fr.object_id = " . $relative->subject_id->feature_id;
+                AND fr.object_id = " . $relative->subject_id->feature_id;
 
         if ($res = chado_query($sql)) {
           $row = $res->fetchObject();
@@ -171,7 +173,7 @@ class local__gene_sequences extends TripalField {
     }
     ksort($mRNAs);
 
-    //TODO: add to list of cvterms needing verification
+    //TODO: add to list of cvterms needing (human) verification
     $sequence_array = array(
      'schema:name' => $feature->name,
      'SO:sequence_of' => array('local:gene_mrna' => $mRNAs)
@@ -180,8 +182,6 @@ class local__gene_sequences extends TripalField {
     $entity->local__gene_sequences['und'][0]['value'] = $sequence_array;
 
   }
-
-
 
 
 
@@ -282,6 +282,16 @@ class local__gene_sequences extends TripalField {
    *   An associative array of the value elements provided by this field.
    */
   public function elementInfo() {
+
+    $field_term = $this->getFieldTermID();
+    return array(
+      $field_term => array(
+        'operations' => array('eq', 'ne', 'contains', 'starts'),
+        'sortable' => TRUE,
+        'searchable' => TRUE,
+      ),
+    );
+
   }
 
 
